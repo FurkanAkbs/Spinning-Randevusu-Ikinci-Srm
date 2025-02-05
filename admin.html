@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+</head>
+<body>
+    <h1>Admin Paneli - Rezervasyonlar</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Bisiklet ID</th>
+                <th>Kullanıcı Adı</th>
+                <th>Kullanıcı İletişim</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation[0] }}</td>
+                <td>{{ reservation[1] }}</td>
+                <td>{{ reservation[2] }}</td>
+                <td>{{ reservation[3] }}</td>
+                <td>
+                    <!-- İptal butonunun POST isteği göndermesi için reservation_id'yi URL'e ekliyoruz -->
+                    <form action="{{ url_for('cancel_reservation', reservation_id=reservation[0]) }}" method="post">
+                        <button type="submit">İptal Et</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('export_reservations') }}">Rezervasyonları Excel Olarak İndir</a>
+</body>
+</html>

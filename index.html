@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bisiklet Rezervasyonu</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .bicycle-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .bicycle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .bicycle img {
+      width: 50px; /* Küçük logo boyutu */
+      height: 50px; /* Küçük logo boyutu */
+      object-fit: cover; /* Görseli kare yap */
+      border-radius: 5px; /* Hafif yuvarlatılmış köşeler */
+    }
+    .bicycle form {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bisiklet Rezervasyonu</h1>
+  <div class="bicycle-list">
+    {% for bicycle in bicycles %}
+    <div class="bicycle">
+      <img src="/static/images/{{ bicycle.name | replace(' ', '_') }}.jpg" alt="{{ bicycle.name }}">
+      <div>
+        <p>{{ bicycle.name }}</p>
+        {% if bicycle.status == 'available' %}
+        <form action="{{ url_for('reserve') }}" method="post">
+          <input type="hidden" name="bicycle_id" value="{{ bicycle.id }}">
+          <input type="text" name="user_name" placeholder="Ad Soyad" required>
+          
+          <!-- E-posta formatını kontrol et: type="email" eklendi -->
+          <input type="email" name="user_contact" placeholder="Email (example@gmail.com)" required 
+                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                 title="Geçerli bir e-posta adresi giriniz (örn. example@gmail.com)">
+          
+          <button type="submit">Rezerve Et</button>
+        </form>
+        {% else %}
+        <p><b>Rezerve Edildi</b></p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
